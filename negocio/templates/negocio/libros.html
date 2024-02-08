@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        {% extends 'negocio/home.html' %}
+
+        {% block nombre %}
+            <title>Lema Libros | Libros</title> 
+        {% endblock nombre %}
+    </head>
+    <body>
+        <main>
+
+        {% block contenido %}
+
+        <h1>Libros</h1>
+        
+        <div id=contenedor_tabla>
+            <table class="tabla">
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Libro</th>
+                        <th>Autor</th>
+                        <th>Año</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for  libro in libros %}
+                    <tr>
+                        <td>{{libro.id}}</td>
+                        <td>{{libro.nombre}}</td>
+                        <td>{{libro.autor}}</td>
+                        <td>{{libro.anio}}</td>
+                    <tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        {% endblock contenido %}        
+
+        </main>
+        
+    </body>
+</html>

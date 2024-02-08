@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        {% extends 'negocio/home.html' %}
+
+        {% block nombre %}
+            <title>Lema Libros | Buscar Libros</title> 
+        {% endblock nombre %}
+    </head>
+    <body>
+        <main>
+
+        {% block contenido %}
+
+        <h1>Libros</h1>
+                         
+        <form class="formulario" action="{% url 'buscarLibros' %}" method="get">
+            {% csrf_token %}
+
+            <p>Patron a buscar: <input type="text" name="buscar" id="buscar"></p>
+
+            <input type="submit" class="boton" value="Buscar">
+        </form>
+
+        {% endblock contenido %}        
+
+        </main>
+        
+    </body>
+</html>
