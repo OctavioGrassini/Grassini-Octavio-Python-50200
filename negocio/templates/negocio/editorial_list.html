@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        {% extends 'negocio/home.html' %}
+
+        {% block nombre %}
+            <title>Lema Libros | Editoriales</title> 
+        {% endblock nombre %}
+    </head>
+    <body>
+
+        <main>
+        {% block contenido %}
+            
+            <h1>Editoriales</h1>
+            <div id=contenedor_tabla>
+
+                <table>
+                    <tr>
+                        <td>
+                            <a href="{% url 'editorial_create' %}"><button type="button" class="btn btn-success">Añadir</button></a>
+                        </td>
+                    </tr>
+                </table>
+
+                <table class="tabla">
+                    <thead>
+                        <tr>
+                            <th class="tabla_head">Id</th>
+                            <th class="tabla_head">Nombre</th>
+                            <th class="tabla_head">Email</th>
+                            <th class="tabla_head">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for  editorial in editorial_list %}
+                        <tr>
+                            <td class="tabla_item">{{editorial.id}}</td>
+                            <td class="tabla_item">{{editorial.nombre}}</td>
+                            <td class="tabla_item">{{editorial.email}}</td>
+                            <td class="tabla_item">
+                                <a href="{% url 'editorial_update' editorial.id %}"><button type="button" class="btn btn-primary">Editar</button></a>
+                                <a href="{% url 'editorial_delete' editorial.id %}"><button type="button" class="btn btn-danger">Eliminar</button></a>
+                            </td>
+                        <tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            
+        {% endblock contenido %}
+        </main>
+        
+        
+    </body>
+</html>

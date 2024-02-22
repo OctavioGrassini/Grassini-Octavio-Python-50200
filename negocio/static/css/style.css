@@ -72,11 +72,11 @@ p{
     text-align: center;
 }
 
-th, td{
+.tabla_head, .tabla_item{
     border: solid 1px black
 }
 
-td{
+.tabla_item{
     padding: 1%;   
 }
 

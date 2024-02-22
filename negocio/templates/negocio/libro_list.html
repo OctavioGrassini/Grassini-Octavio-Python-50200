@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        {% extends 'negocio/home.html' %}
+
+        {% block nombre %}
+            <title>Lema Libros | Libros</title> 
+        {% endblock nombre %}
+    </head>
+    <body>
+        <main>
+
+        {% block contenido %}
+
+        <h1>Libros</h1>
+        
+        <div id=contenedor_tabla>
+
+            <table>
+                <tr>
+                    <td>
+                        <a href="{% url 'libro_create' %}"><button type="button" class="btn btn-success">Añadir</button></a>
+                    </td>
+                </tr>
+            </table>
+
+            <table class="tabla">
+                <thead>
+                    <tr>
+                        <th class="tabla_head">Id</th>
+                        <th class="tabla_head">Libro</th>
+                        <th class="tabla_head">Autor</th>
+                        <th class="tabla_head">Año</th>
+                        <th class="tabla_head">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for libro in libro_list %}
+                    <tr>
+                        <td class="tabla_item">{{libro.id}}</td>
+                        <td class="tabla_item">{{libro.nombre}}</td>
+                        <td class="tabla_item">{{libro.autor}}</td>
+                        <td class="tabla_item">{{libro.anio}}</td>
+                        <td class="tabla_item">
+                            <a href="{% url 'libro_update' libro.id %}"><button type="button" class="btn btn-primary">Editar</button></a>
+                            <a href="{% url 'libro_delete' libro.id %}"><button type="button" class="btn btn-danger">Eliminar</button></a>
+                        </td>
+                    <tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        {% endblock contenido %}        
+
+        </main>
+        
+    </body>
+</html>

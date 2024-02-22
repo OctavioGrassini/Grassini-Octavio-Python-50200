@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        {% extends 'negocio/home.html' %}
+
+        {% block nombre %}
+            <title>Lema Libros | Clientes</title> 
+        {% endblock nombre %}
+    </head>
+    <body>
+        
+        <main>
+        {% block contenido %}
+            
+            <h1>Clientes</h1>
+            
+            <div id=contenedor_tabla>
+
+                <table>
+                    <tr>
+                        <td>
+                            <a href="{% url 'cliente_create' %}"><button type="button" class="btn btn-success">Añadir</button></a>
+                        </td>
+                    </tr>
+                </table>
+
+                <table class="tabla">
+                    <thead>
+                        <tr>
+                            <th class="tabla_head">Id</th>
+                            <th class="tabla_head">Nombre</th>
+                            <th class="tabla_head">Apellido</th>
+                            <th class="tabla_head">Email</th>
+                            <th class="tabla_head">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for  cliente in cliente_list %}
+                        <tr>
+                            <td class="tabla_item">{{cliente.id}}</td>
+                            <td class="tabla_item">{{cliente.nombre}}</td>
+                            <td class="tabla_item">{{cliente.apellido}}</td>
+                            <td class="tabla_item">{{cliente.email}}</td>
+                            <td class="tabla_item">
+                                <a href="{% url 'cliente_update' cliente.id %}"><button type="button" class="btn btn-primary">Editar</button></a>
+                                <a href="{% url 'cliente_delete' cliente.id %}"><button type="button" class="btn btn-danger">Eliminar</button></a>
+                            </td>
+                        <tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            
+        {% endblock contenido %}
+        </main>
+        
+    </body>
+</html>
