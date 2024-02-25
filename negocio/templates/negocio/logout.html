@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        {% extends 'negocio/home.html' %}
+
+        {% block nombre %}
+            <title>Lema Libros | Logout</title> 
+        {% endblock nombre %}
+    </head>
+    <body>
+        <main>
+
+        {% block contenido %}
+
+        <h2>Logout</h2>
+
+        <h4 id="logout_message">
+            <p>Usted se ha deslogeado exitosamente</p>
+        </h4>
+
+        {% endblock contenido %}        
+
+        </main>
+        
+    </body>
+</html>

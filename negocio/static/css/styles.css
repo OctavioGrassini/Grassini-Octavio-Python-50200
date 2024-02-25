@@ -22,6 +22,19 @@ body{
     margin-bottom: 4px;
 }
 
+#logout_message{
+    font-family: 'Poppins', sans-serif;
+    color:#323338;
+    text-align: center;
+}
+
+.botones_navbar{
+    position: absolute;
+    right: 0;
+    margin-right: 4%;
+
+}
+
 /*#instagram{
     float: right;
     width: 7%;
@@ -45,7 +58,7 @@ main {
     min-height: 80vh;
 }
 
-h1{
+h1, h2, h4{
     display: flex;
     justify-content: center;
     align-items: center;

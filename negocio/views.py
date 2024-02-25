@@ -3,8 +3,14 @@ from django.http import HttpResponse
 from django.urls import reverse_lazy
 from django.shortcuts import redirect
 from django.views.generic import ListView,  CreateView, UpdateView, DeleteView
+from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth import authenticate, login
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.decorators import login_required
+
 from .models import *
 from .forms import *
+
 
 def home(request):
     return render(request, "negocio/home.html")
@@ -72,10 +78,11 @@ def home(request):
 #
 #    return render(request, 'negocio/editorialForm.html', {"form":miForm})
 
-
+@login_required
 def buscar(request):
     return render(request, 'negocio/buscar.html')
 
+@login_required
 def buscarLibros(request):
     if request.GET["buscar"]:
         patron = request.GET["buscar"]
@@ -86,59 +93,101 @@ def buscarLibros(request):
 
 #_______________ CREATE _______________
 
-class LibroCreate(CreateView):
+class LibroCreate(LoginRequiredMixin, CreateView):
     model = Libro
     fields = ['nombre', 'autor', 'anio']
     success_url = reverse_lazy("libros")
 
-class EditorialCreate(CreateView):
+class EditorialCreate(LoginRequiredMixin, CreateView):
     model = Editorial
     fields = ['nombre', 'email']
     success_url = reverse_lazy("editoriales")
 
-class ClienteCreate(CreateView):
+class ClienteCreate(LoginRequiredMixin, CreateView):
     model = Cliente
     fields = ['nombre', 'apellido', 'email']
     success_url = reverse_lazy("clientes")
 
 #_______________ READ _______________
 
-class LibroList(ListView):
+class LibroList(LoginRequiredMixin, ListView):
     model = Libro
 
-class EditorialList(ListView):
+class EditorialList(LoginRequiredMixin, ListView):
     model = Editorial
     
-class ClienteList(ListView):
+class ClienteList(LoginRequiredMixin, ListView):
     model = Cliente
 
 #_______________ UPDATE _______________
     
-class LibroUpdate(UpdateView):
+class LibroUpdate(LoginRequiredMixin, UpdateView):
     model = Libro
     fields = ['nombre', 'autor', 'anio']
     success_url = reverse_lazy("libros")
 
-class EditorialUpdate(UpdateView):
+class EditorialUpdate(LoginRequiredMixin, UpdateView):
     model = Editorial
     fields = ['nombre', 'email']
     success_url = reverse_lazy("editoriales")
 
-class ClienteUpdate(UpdateView):
+class ClienteUpdate(LoginRequiredMixin, UpdateView):
     model = Cliente
     fields = ['nombre', 'apellido', 'email']
     success_url = reverse_lazy("clientes")
     
 #_______________ DELETE _______________
 
-class LibroDelete(DeleteView):
+class LibroDelete(LoginRequiredMixin, DeleteView):
     model = Libro
     success_url = reverse_lazy("libros")
 
-class EditorialDelete(DeleteView):
+class EditorialDelete(LoginRequiredMixin, DeleteView):
     model = Editorial
     success_url = reverse_lazy("editoriales")
 
-class ClienteDelete(DeleteView):
+class ClienteDelete(LoginRequiredMixin, DeleteView):
     model = Cliente
     success_url = reverse_lazy("clientes")
+
+#_______________ LOGIN _______________
+    
+def login_request(request):
+    if request.method == "POST":
+        miForm = AuthenticationForm(request, data=request.POST)
+        if  miForm.is_valid():
+            usuario = miForm.cleaned_data.get("username")
+            password = miForm.cleaned_data.get("password")
+            user = authenticate(request, username = usuario, password = password)
+            if user is not None:
+                login(request, user)
+                return redirect(reverse_lazy('home'))
+            else:
+                return redirect(reverse_lazy('login'))
+            
+         
+    else:
+        miForm = AuthenticationForm()
+
+    return render(request, 'negocio/login.html', {"form":miForm})  
+
+#_______________ REGISTER _______________
+
+def register(request):
+    if request.method == "POST":
+        miForm = RegistroForm(request.POST)
+        if miForm.is_valid():
+            usuario = miForm.cleaned_data.get("username")            
+            miForm.save()
+            return redirect(reverse_lazy("home"))
+        
+    else:
+        miForm = RegistroForm()
+
+    return render(request, 'negocio/registro.html', {"form":miForm})
+
+
+    
+
+
+
