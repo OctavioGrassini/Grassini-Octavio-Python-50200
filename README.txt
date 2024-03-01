@@ -1,16 +1,20 @@
-El proytecto incluye tres clases en models.py, dentro de la aplicación "negocio":
+Proyecto: Prototipo de Gestión de Librería
 
-1- Libro
-2- Cliente
-3- Editorial
+Objetivo Funcional:
+El objetivo de este proyecto es crear un prototipo de una página web para la gestión de una librería. Se centra en el backend del sitio utilizando Django, con funcionalidades para la administración de libros, clientes, editoriales y reservas.
 
-Además de la pagina de inicio, el sitio cuenta con tres formularios, uno para cada pestaña, que permiten agregar contenido a la base de datos.
-Las URL de estos últimos son:
+Descripción de Modelos:
+El proyecto incluye cuatro clases en models.py, dentro de la aplicación "negocio": Libro, Cliente, Editorial y Reserva.
 
-negocio/libroForm/
-negocio/clienteForm/
-negocio/editorialForm/
+Usuario Administrador y Contraseña:
+- Usuario: admin
+- Contraseña: 12345
 
-Luego, puede filtrarse con un patrón de texto, los items de la tabla "libros", a través de la url "negocio/buscar/"
+Información Adicional:
+Esta página es un prototipo de web realizado como proyecto final del curso de Python de Coderhouse, comisión 50200. Se centra en el backend del sitio utilizando Django, por lo que los aspectos de HTML y CSS pueden mostrarse descuidados, pero son funcionales y estéticos para evaluar el proyecto cómodamente.
 
-Por último, puede accederse a las pestañas de libros, clientes y editoriales a través de la barra de navegación del sitio; y a las demás funciones del mismo a través de los accesos en la página de inicio.
+El prototipo se basa en la gestión de una librería, incluyendo la información de libros, registro de editoriales, clientes y reservas. Puede accederse a las diferentes funciones y pestañas del sitio a través de la barra de navegación y la página de inicio. Cada tabla tiene funcionalidades para añadir, modificar y eliminar elementos. Además, se permite el registro de nuevos usuarios y el inicio de sesión con los mismos.
+
+Otros Usuarios:
+- Usuario: Prueba
+- Contraseña: Contraseña123

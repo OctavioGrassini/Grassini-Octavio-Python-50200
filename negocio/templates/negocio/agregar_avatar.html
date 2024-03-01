@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        {% extends 'negocio/home.html' %}
+
+        {% block nombre %}
+            <title>Lema Libros | Avatar</title> 
+        {% endblock nombre %}
+    </head>
+    <body>
+        <main>
+
+        {% block contenido %}
+
+        <h1>Actualizar Avatar</h1>
+
+        <div class="formulario">               
+            <form action="" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+
+                <table>
+                    {{ form.as_table }}
+                </table>
+
+                <input class="boton" type="submit" value="Confirmar">
+            </form>
+        </div>
+
+        {% endblock contenido %}        
+
+        </main>
+        
+    </body>
+</html>

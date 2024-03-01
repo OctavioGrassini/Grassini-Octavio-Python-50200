@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        {% extends 'negocio/home.html' %}
+
+        {% block nombre %}
+            <title>Lema Libros | Acerca de mí</title> 
+        {% endblock nombre %}
+    </head>
+    <body>
+
+        <main>
+        {% block contenido %}
+            
+            <h1>Acerca de mí</h1>
+            
+            <div id="entrada">
+                <p>Mi nombre es Octavio Grassini, nacido en el año 2000, tengo veintitrés años y soy
+                originario de Río Cuarto, Córdoba, Argentina. Soy estudiante de administración, 
+                bombero voluntario, y trabajo medio tiempo en una libreria, la cual usé como inspiración para este proyecto.
+                Soy un apacionado por la lectura y la actividad física, el trabajo en equipo y la formación. Tomé el curso de Python de Coderhouse esperando aprender sobre el lenguaje de programación, pero no especificamente para desarrollo web, 
+                sino para eventualmente explorar en análisis y la ciencia de datos. <br>
+                La experiencia no ha sido más que gratificante, encontré las clases entretenidas y la dediciación del docente y tutores me dejan mucho más que conforme. Definitivamente recomendaría este curso y sobre todo este staff.</p>
+            </div>
+            
+            
+        {% endblock contenido %}
+        </main>
+        
+        
+    </body>
+</html>

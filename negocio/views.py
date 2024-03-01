@@ -15,81 +15,8 @@ from .forms import *
 def home(request):
     return render(request, "negocio/home.html")
 
-#def libros(request):
-#    contexto = {'libros': Libro.objects.all()}
-#    return render(request, 'negocio/libros.html', contexto)
-#
-#def clientes(request):
-#
-#    contexto = {'clientes': Cliente.objects.all()}
-#    return render(request, 'negocio/clientes.html', contexto)
-#
-#def editoriales(request):
-#
-#    contexto = {'editoriales': Editorial.objects.all()}
-#    return render(request, 'negocio/editoriales.html', contexto)
-
-
-#def libroForm(request):
-#    if request.method == "POST":
-#        miForm = LibroForm(request.POST)
-#        if  miForm.is_valid():
-#            libro_nombre = miForm.cleaned_data.get("nombre")
-#            libro_autor = miForm.cleaned_data.get("autor")
-#            libro_anio =  miForm.cleaned_data.get("anio")
-#            libro = Libro(nombre = libro_nombre, autor = libro_autor, anio = libro_anio)
-#            libro.save()
-#            return redirect(reverse_lazy("libros"))
-#         
-#    else:
-#        miForm = LibroForm()
-#
-#    return render(request, 'negocio/libroForm.html', {"form":miForm})
-#
-#
-#def clienteForm(request):
-#    if request.method == "POST":
-#        miForm = ClienteForm(request.POST)
-#        if miForm.is_valid():
-#            cliente_nombre = miForm.cleaned_data.get("nombre")
-#            cliente_apellido = miForm.cleaned_data.get("apellido")
-#            cliente_email = miForm.cleaned_data.get("email")
-#            cliente = Cliente(nombre = cliente_nombre, apellido = cliente_apellido, email = cliente_email)
-#            cliente.save()
-#            return redirect(reverse_lazy("clientes"))
-#
-#    else:
-#        miForm = ClienteForm()
-#
-#    return render(request, 'negocio/clienteForm.html', {"form":miForm})
-#
-#def editorialForm(request):
-#    if request.method == "POST":
-#        miForm = EditorialForm(request.POST)
-#        if miForm.is_valid():
-#            editorial_nombre = miForm.cleaned_data.get("nombre")
-#            editorial_email = miForm.cleaned_data.get("email")
-#            editorial = Editorial(nombre = editorial_nombre, email = editorial_email)
-#            editorial.save()
-#            return redirect(reverse_lazy("editoriales"))
-#        
-#    else:
-#        miForm = EditorialForm()
-#
-#    return render(request, 'negocio/editorialForm.html', {"form":miForm})
-
-@login_required
-def buscar(request):
-    return render(request, 'negocio/buscar.html')
-
-@login_required
-def buscarLibros(request):
-    if request.GET["buscar"]:
-        patron = request.GET["buscar"]
-        libros = Libro.objects.filter(nombre__icontains=patron)
-        contexto = {"libros": libros}
-        return render(request, 'negocio/libros.html', contexto)
-    return HttpResponse("No se ingresaron patrones de busqueda")
+def aboutme(request):
+    return render(request, "negocio/aboutme.html")
 
 #_______________ CREATE _______________
 
@@ -108,6 +35,11 @@ class ClienteCreate(LoginRequiredMixin, CreateView):
     fields = ['nombre', 'apellido', 'email']
     success_url = reverse_lazy("clientes")
 
+class ReservaCreate(LoginRequiredMixin, CreateView):
+    model = Reserva
+    fields = ['libro', 'cliente', 'telefono', 'email']
+    success_url = reverse_lazy("reservas")
+
 #_______________ READ _______________
 
 class LibroList(LoginRequiredMixin, ListView):
@@ -118,6 +50,9 @@ class EditorialList(LoginRequiredMixin, ListView):
     
 class ClienteList(LoginRequiredMixin, ListView):
     model = Cliente
+
+class ReservaList(LoginRequiredMixin, ListView):
+    model = Reserva
 
 #_______________ UPDATE _______________
     
@@ -135,6 +70,11 @@ class ClienteUpdate(LoginRequiredMixin, UpdateView):
     model = Cliente
     fields = ['nombre', 'apellido', 'email']
     success_url = reverse_lazy("clientes")
+
+class ReservaUpdate(LoginRequiredMixin, UpdateView):
+    model = Reserva
+    fields = ['libro', 'cliente', 'telefono', 'email']
+    success_url = reverse_lazy("reservas")
     
 #_______________ DELETE _______________
 
@@ -150,6 +90,10 @@ class ClienteDelete(LoginRequiredMixin, DeleteView):
     model = Cliente
     success_url = reverse_lazy("clientes")
 
+class ReservaDelete(LoginRequiredMixin, DeleteView):
+    model = Reserva
+    success_url = reverse_lazy("reservas")
+
 #_______________ LOGIN _______________
     
 def login_request(request):
@@ -159,9 +103,19 @@ def login_request(request):
             usuario = miForm.cleaned_data.get("username")
             password = miForm.cleaned_data.get("password")
             user = authenticate(request, username = usuario, password = password)
+
             if user is not None:
                 login(request, user)
+
+                try:
+                    avatar = Avatar.objects.get(user=request.user.id).imagen.url
+                except:
+                    avatar = "/media/avatares/default.png"
+                finally:
+                    request.session["avatar"] = avatar
+
                 return redirect(reverse_lazy('home'))
+
             else:
                 return redirect(reverse_lazy('login'))
             
@@ -185,6 +139,62 @@ def register(request):
         miForm = RegistroForm()
 
     return render(request, 'negocio/registro.html', {"form":miForm})
+
+#_______________ EDIT PROFILE _______________
+
+@login_required
+def editarPerfil(request):
+    usuario = request.user
+
+    if request.method == "POST":
+        miForm = UserEditForm(request.POST)
+
+        if miForm.is_valid():
+            informacion = miForm.cleaned_data
+            user = User.objects.get(username=usuario)
+            user.email = informacion['email']
+            user.first_name = informacion['first_name']
+            user.last_name = informacion['last_name']
+            user.set_password(informacion['password1'])
+            miForm.save()
+
+            return render(request, "negocio/home.html")
+        
+    else:
+        miForm = UserEditForm(instance=usuario)
+
+    return render(request, 'negocio/editar_perfil.html', {"form":miForm})
+
+
+@login_required
+def agregarAvatar(request):
+
+    if request.method == "POST":
+        miForm = AvatarForm(request.POST, request.FILES)
+
+        if miForm.is_valid():
+            usuario = User.objects.get(username=request.user)
+
+            #_____ Borrar Avatar previo _____
+            avatarPrevio = Avatar.objects.filter(user=usuario)
+            if len(avatarPrevio) > 0:
+                for i in range(len(avatarPrevio)):
+                    avatarPrevio[i].delete()
+            #_________________________________
+                    
+            avatar = Avatar(user=usuario, imagen=miForm.cleaned_data['imagen'])
+            avatar.save()
+
+            #_________________________________
+            imagen = Avatar.objects.get(user=request.user.id).imagen.url
+            request.session["avatar"] = imagen
+
+            return render(request, "negocio/home.html")
+        
+    else:
+        miForm = AvatarForm()
+
+    return render(request, 'negocio/agregar_avatar.html', {"form":miForm})
 
 
     

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        {% extends 'negocio/home.html' %}
+
+        {% block nombre %}
+            <title>Lema Libros | Reservas</title> 
+        {% endblock nombre %}
+    </head>
+    <body>
+        <main>
+
+        {% block contenido %}
+
+        <h1>Reservas</h1>
+        
+        <div id=contenedor_tabla>
+
+            <table>
+                <tr>
+                    <td>
+                        <a href="{% url 'reserva_create' %}"><button type="button" class="btn btn-success">Añadir</button></a>
+                    </td>
+                </tr>
+            </table>
+
+            <table class="tabla">
+                <thead>
+                    <tr>
+                        <th class="tabla_head">Id</th>
+                        <th class="tabla_head">Libro</th>
+                        <th class="tabla_head">Cliente</th>
+                        <th class="tabla_head">Telefono</th>
+                        <th class="tabla_head">Email</th>
+                        <th class="tabla_head">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for reserva in reserva_list %}
+                    <tr>
+                        <td class="tabla_item">{{reserva.id}}</td>
+                        <td class="tabla_item">{{reserva.libro}}</td>
+                        <td class="tabla_item">{{reserva.cliente}}</td>
+                        <td class="tabla_item">{{reserva.telefono}}</td>
+                        <td class="tabla_item">{{reserva.email}}</td>
+                        <td class="tabla_item">
+                            <a href="{% url 'reserva_update' reserva.id %}"><button type="button" class="btn btn-primary">Editar</button></a>
+                            <a href="{% url 'reserva_delete' reserva.id %}"><button type="button" class="btn btn-danger">Eliminar</button></a>
+                        </td>
+                    <tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        {% endblock contenido %}        
+
+        </main>
+        
+    </body>
+</html>

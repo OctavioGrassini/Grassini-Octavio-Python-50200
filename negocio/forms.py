@@ -2,22 +2,6 @@ from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 
-#class ClienteForm(forms.Form):
-#    nombre = forms.CharField(max_length = 25, required = True)
-#    apellido = forms.CharField(max_length = 25, required = True)
-#    email = forms.EmailField(required = True)
-#
-#class EditorialForm(forms.Form):
-#    nombre = forms.CharField(max_length = 25, required = True)
-#    email = forms.EmailField(required = True)
-#
-#class LibroForm(forms.Form):
-#    nombre = forms.CharField(max_length = 50, required = True)
-#    autor = forms.CharField(max_length = 50, required = True)
-#    anio = forms.IntegerField(required = True)
-#
-#    class Meta:
-#        fields = [ 'nombre', 'autor', 'año' ]
 
 class RegistroForm(UserCreationForm):
     username = forms.CharField(max_length = 25, required = True)
@@ -28,3 +12,23 @@ class RegistroForm(UserCreationForm):
     class Meta:
         model = User
         fields = ['username', 'email', 'password1', 'password2']
+
+
+class UserEditForm(UserCreationForm):
+    email = forms.EmailField(required = True)
+    password1 = forms.CharField(max_length = 30, label = "Nueva contraseña", required = True, widget = forms.PasswordInput)
+    password2 = forms.CharField(max_length = 30, label = "Confirmar contraseña", required = True, widget = forms.PasswordInput)
+    first_name = forms.CharField(max_length = 50, label = "Nombre/s", required = True)
+    last_name = forms.CharField(max_length = 50, label = "Apellido/s", required = True)
+
+    class Meta:
+        model = User
+        fields = ['email', 'password1', 'password2', 'first_name', 'last_name']
+
+
+class AvatarForm(forms.Form):
+    imagen = forms.ImageField(required=True)
+
+    class Meta:
+        model = User
+        fields = ['email', 'password1', 'password2', 'first_name', 'last_name']
